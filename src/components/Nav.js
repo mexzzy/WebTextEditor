@@ -72,6 +72,7 @@ function Nav() {
             <p>
               Recommended format to save your work is <b>.html </b>
             </p>
+            <p>Logo designed by <a href="https://instagram.com/s.s_graphiks ">s.s graphics</a></p>
           </div>
         )}
       </nav>
