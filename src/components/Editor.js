@@ -54,7 +54,7 @@ function Editor() {
     border: "1px solid #ccc",
     padding: "8px",
     background: "#fff",
-    minHeight : "50vh",
+    minHeight: "50vh",
   };
   const characterCount = editorHtml.replace(/<[^>]*>/g, "").length;
 
@@ -172,7 +172,7 @@ function Editor() {
         onChange={handleChange}
         modules={modules}
         formats={formats}
-        placeholder="Text here..."
+        placeholder="Enter your text here..."
         style={reactQuillStyle}
       />
 
