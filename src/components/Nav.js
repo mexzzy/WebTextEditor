@@ -70,7 +70,7 @@ function Nav() {
               </div>
             ))}
             <p>
-              Best format to save your work is <b>.html </b>
+              Recommended format to save your work is <b>.html </b>
             </p>
           </div>
         )}

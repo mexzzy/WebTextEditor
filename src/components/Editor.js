@@ -185,7 +185,7 @@ function Editor() {
         {saveBtnOption && (
           <div className="saveBtnOption">
             <button onClick={handleSaveAsHTML}>
-              .html <span>Best format</span>
+              .html <span>Recommended format</span>
             </button>
             <button onClick={handleSaveAsTXT} disabled={isLoading}>
               {isLoading ? "Saving..." : ".txt"}
