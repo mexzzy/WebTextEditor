@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #ededed34;
+  transition: .5s ease;
 }
-
-.App-logo {
-  height: 40vmin;
+*::selection{
+  background-color: #51515182;
+  color: #fff;
+}
+nav {
+  padding: 1% 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #cccccc34;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+}
+.logo img{
+  width: 50px;
+  height: 50px;
+}
+.logoTitle {
+  font-weight: 700;
+  font-size: 17px;
+}
+.aboutButton {
+  padding: 5px 15px;
+  font-weight: 700;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: 1px solid transparent;
+  position: relative;
+}
+.aboutButton:hover {
+  border: 1px solid #000000;
+  cursor: pointer;
+}
+.aboutButton span {
+  position: absolute;
+  font-weight: normal;
+  font-size: small;
+  border-radius: 5px;
+  padding: 2px 5px;
+  background-color: #000000;
+  color: #ccc;
+  display: none;
+  bottom: -40px;
+  text-align: center;
+  z-index: 5;
+}
+.aboutButton:hover > span {
+  display: block;
   pointer-events: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.aboutDialog{
+  z-index: 3;
+  width: 300px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px #00000035;
+  position: absolute;
+  background-color: #fff;
+  padding: 10px;
+  right: 10%;
+  top: 100%;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
+  gap: 10px;
+}
+.aboutDialog p{
+  font-size: 14px;
+  color: #000000cd;
+}
+.aboutDialog .list{
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+
+}
+.aboutDialog .list .icon{
+  width:30px;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border: 1px solid #ccc;
+  font-weight: 500;
 }
 
-.App-link {
-  color: #61dafb;
+.editor{
+  padding: 2% 10%;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.characters{
+  padding: 5px 10px ;
+  background-color: #fff;
+  border-radius: 5px;
+  width: fit-content;
 }
