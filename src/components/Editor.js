@@ -8,7 +8,10 @@ function Editor() {
   const quillRef = useRef(null);
   const [editorHtml, setEditorHtml] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [saveBtnOption, setSaveBtnOption] = useState(false);
   const [isEditorDirty, setIsEditorDirty] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResult, setSearchResult] = useState(false);
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -51,6 +54,7 @@ function Editor() {
     border: "1px solid #ccc",
     padding: "8px",
     background: "#fff",
+    minHeight : "50vh",
   };
   const characterCount = editorHtml.replace(/<[^>]*>/g, "").length;
 
@@ -70,15 +74,12 @@ function Editor() {
 
   const handleSaveAsTXT = () => {
     setIsEditorDirty(true);
-    setIsLoading(true); // Set loading state to true
-
+    setIsLoading(true);
     const quill = quillRef.current.getEditor();
     const text = quill.getText();
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-
     saveAs(blob, "document.txt");
-
-    setIsLoading(false); // Set loading state back to false
+    setIsLoading(false);
   };
 
   const handleSaveAsHTML = () => {
@@ -89,23 +90,82 @@ function Editor() {
   };
 
   useEffect(() => {
-    // Add event listener for beforeunload
     const handleBeforeUnload = (e) => {
       if (isEditorDirty) {
         e.preventDefault();
-        e.returnValue = ""; // Display a confirmation message
+        e.returnValue = "";
       }
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
-      // Remove event listener when component unmounts
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [isEditorDirty]);
+
+  const saveBtnOptionHandler = () => {
+    setSaveBtnOption(!saveBtnOption);
+  };
+
+  const handleSearchInputChange = (e) => {
+    const searchText = e.target.value.trim();
+    setSearchQuery(searchText);
+
+    const quill = quillRef.current.getEditor();
+    const quillText = quill.getText();
+
+    quill.formatText(0, quillText.length, "background", false);
+
+    if (searchText) {
+      const index = quillText.indexOf(searchText);
+      if (index !== -1) {
+        quill.formatText(index, searchText.length, "background", "yellow");
+        setSearchResult(true);
+      } else {
+        setSearchResult(false);
+      }
+    } else {
+      setSearchResult(false);
+    }
+  };
   return (
     <div className="editor">
+      <div className="mainAbsolute">
+        <div className="firstFlex">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+            className="characters"
+          >
+            <span>{characterCount > 1 ? "Characters" : "Character"}:</span>{" "}
+            <div>{characterCount}</div>
+          </div>
+
+          <div className="undoAndRedoBtn">
+            <button onClick={handleUndo}>
+              <BiUndo size={18} />
+            </button>
+            <button onClick={handleRedo}>
+              <BiRedo size={18} />
+            </button>
+          </div>
+        </div>
+        <div className="searchContainer">
+          <input
+            type="text"
+            placeholder="Search text..."
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+          />
+          {searchResult ? (
+            <div className="searchResult">Result found.</div>
+          ) : (
+            <div className="noSearchResult">No result found.</div>
+          )}
+        </div>
+      </div>
       <ReactQuill
         ref={quillRef}
         value={editorHtml}
@@ -115,35 +175,23 @@ function Editor() {
         placeholder="Text here..."
         style={reactQuillStyle}
       />
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-        }}
-        className="characters"
-      >
-        <span>{characterCount > 1 ? "Characters" : "Character"}:</span>{" "}
-        <div>
-          {characterCount} <BiSave />
+
+      <div className="savingContainer">
+        <div className="saveBtn" onClick={saveBtnOptionHandler}>
+          <BiSave style={{ background: "transparent" }} />
+          <span>Save as</span>
+          <BiChevronDown style={{ background: "transparent" }} />
         </div>
-      </div>
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={handleUndo}>
-          <BiUndo />
-        </button>
-        <button onClick={handleRedo}>
-          <BiRedo />
-        </button>
-      </div>
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={handleSaveAsTXT} disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save as TXT"}
-        </button>
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={handleSaveAsHTML}>Save as HTML</button>
-        </div>
+        {saveBtnOption && (
+          <div className="saveBtnOption">
+            <button onClick={handleSaveAsHTML}>
+              .html <span>Best format</span>
+            </button>
+            <button onClick={handleSaveAsTXT} disabled={isLoading}>
+              {isLoading ? "Saving..." : ".txt"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

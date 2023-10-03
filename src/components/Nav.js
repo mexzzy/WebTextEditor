@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../images/logo.png"
+import logo from "../images/logo.png";
 function Nav() {
   const [aboutDialog, setAboutDialog] = useState(false);
 
@@ -42,17 +42,19 @@ function Nav() {
     },
     {
       id: "9",
-      text: " Customize text to have borders.",
+      text: " Customize text into a link.",
     },
     {
       id: "10",
-      text: " Customize text into a link.",
+      text: " embed in images and videos.",
     },
   ];
   return (
     <div>
       <nav>
-        <div className="logo"><img src={logo} alt="logo" /></div>
+        <div className="logo">
+          <img src={logo} alt="logo" />
+        </div>
         <div className="logoTitle">webTextEditor</div>
         <div className="aboutButton" onClick={aboutDialogHandler}>
           <i>i</i> <span>{aboutDialog ? "close info" : "open info"}</span>
@@ -60,16 +62,16 @@ function Nav() {
         {aboutDialog && (
           <div className="aboutDialog">
             <h3>webTextEditor</h3>
-            <p>
-              webTextEditor gives you the ability to highlight on input text and
-              :
-            </p>
+            <p>webTextEditor gives you the ability to :</p>
             {aboutList.map((index) => (
               <div className="list" key={index.id}>
                 <span className="icon">{index.id}</span>
                 <span className="defineText">{index.text}</span>
               </div>
             ))}
+            <p>
+              Best format to save your work is <b>.html </b>
+            </p>
           </div>
         )}
       </nav>
