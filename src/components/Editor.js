@@ -183,7 +183,7 @@ function Editor() {
         <div className="searchContainer">
           <input
             type="text"
-            placeholder="Search text..."
+            placeholder="Find text..."
             value={searchQuery}
             onChange={handleSearchInputChange}
           />
