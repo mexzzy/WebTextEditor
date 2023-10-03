@@ -153,13 +153,30 @@ nav {
   color: rgba(128, 0, 0, 0.815);
   font-size: 12px;
 }
+.bottomFlex{
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+.copyToClipboard{
+   display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #0000001d;
+  font-size: 14px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 .savingContainer {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: column;
   position: relative;
-  margin-top: 10px;
 }
 .saveBtn {
   width: 150px;
@@ -202,7 +219,7 @@ nav {
 }
 .saveBtnOption button:nth-child(1) span {
   position: absolute;
-  bottom: -200%;
+  bottom: -100%;
   display: none;
   padding: 5px 10px;
   border-radius: 5px;

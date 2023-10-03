@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { BiUndo, BiRedo, BiSave, BiChevronDown } from "react-icons/bi";
+import {
+  BiUndo,
+  BiRedo,
+  BiSave,
+  BiChevronDown,
+  BiCopyAlt,
+} from "react-icons/bi";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { saveAs } from "file-saver";
@@ -12,6 +18,8 @@ function Editor() {
   const [isEditorDirty, setIsEditorDirty] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(false);
+  const [copyStatus, setCopyStatus] = useState(null);
+
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -50,18 +58,21 @@ function Editor() {
     "video",
     "direction",
   ];
+
   const reactQuillStyle = {
     border: "1px solid #ccc",
     padding: "8px",
     background: "#fff",
     minHeight: "50vh",
   };
+
   const characterCount = editorHtml.replace(/<[^>]*>/g, "").length;
 
   const handleChange = (html) => {
     setEditorHtml(html);
     setIsEditorDirty(true);
   };
+
   const handleUndo = () => {
     const quill = quillRef.current.getEditor();
     quill.history.undo();
@@ -127,6 +138,23 @@ function Editor() {
       setSearchResult(false);
     }
   };
+
+  const handleCopyToClipboard = () => {
+    const quill = quillRef.current.getEditor();
+    const text = quill.getText();
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    setCopyStatus("Copied");
+
+    setTimeout(() => {
+      setCopyStatus(null);
+    }, 2000);
+  };
+
   return (
     <div className="editor">
       <div className="mainAbsolute">
@@ -174,24 +202,31 @@ function Editor() {
         formats={formats}
         placeholder="Enter your text here..."
         style={reactQuillStyle}
+        theme="snow"
       />
 
-      <div className="savingContainer">
-        <div className="saveBtn" onClick={saveBtnOptionHandler}>
-          <BiSave style={{ background: "transparent" }} />
-          <span>Save as</span>
-          <BiChevronDown style={{ background: "transparent" }} />
-        </div>
-        {saveBtnOption && (
-          <div className="saveBtnOption">
-            <button onClick={handleSaveAsHTML}>
-              .html <span>Recommended format</span>
-            </button>
-            <button onClick={handleSaveAsTXT} disabled={isLoading}>
-              {isLoading ? "Saving..." : ".txt"}
-            </button>
+      <div className="bottomFlex">
+        <button className="copyToClipboard" onClick={handleCopyToClipboard}>
+          {copyStatus === "Copied" ? "Copied" : "Copy to Clipboard"}
+          <BiCopyAlt />
+        </button>
+        <div className="savingContainer">
+          <div className="saveBtn" onClick={saveBtnOptionHandler}>
+            <BiSave style={{ background: "transparent" }} />
+            <span>Save as</span>
+            <BiChevronDown style={{ background: "transparent" }} />
           </div>
-        )}
+          {saveBtnOption && (
+            <div className="saveBtnOption">
+              <button onClick={handleSaveAsHTML}>
+                .html <span>Recommended </span>
+              </button>
+              <button onClick={handleSaveAsTXT} disabled={isLoading}>
+                {isLoading ? "Saving..." : ".txt"}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
