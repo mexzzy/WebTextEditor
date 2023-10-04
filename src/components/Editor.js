@@ -64,6 +64,7 @@ function Editor() {
     padding: "8px",
     background: "#fff",
     minHeight: "50vh",
+    fontSize: "16px",
   };
 
   const characterCount = editorHtml.replace(/<[^>]*>/g, "").length;
